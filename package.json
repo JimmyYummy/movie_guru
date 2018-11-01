@@ -1,0 +1,19 @@
+{
+  "name": "cis550_project_f18",
+  "version": "1.0.0",
+  "description": "CIS550 Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajpetrosky/cis550_project_f18.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ajpetrosky/cis550_project_f18/issues"
+  },
+  "homepage": "https://github.com/ajpetrosky/cis550_project_f18#readme"
+}
