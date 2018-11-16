@@ -18,7 +18,7 @@ const mongoose = require('mongoose');
 //const routes = require('./routes');
 
 // env variable check
-if (!process.env.MONGODB_URI || !process.env.MYSQL_HOST) {
+if (!process.env.MONGODB_URI || !process.env.MYSQL_URI) {
   console.log('ERROR: environmental variables missing, remember to source your env.sh file!');
 }
 
@@ -27,13 +27,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // sql database setup
-const connection = mysql.createConnection({
-  host     : process.env.MYSQL_HOST,
-  port     : process.env.MYSQL_PORT,
-  user     : process.env.MYSQL_USER,
-  password : process.env.MYSQL_PASSWORD,
-  database : process.env.MYSQL_DBNAME
-});
+const connection = mysql.createConnection(process.env.MYSQL_URI);
 
 connection.connect();
 
@@ -46,8 +40,7 @@ connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
 
 
 // start connection to MONGODB
-console.log(process.env.MONDODB_URI)
-mongoose.connect(process.env.MONGODB_URI).then(
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true}).then(
   () => {
     console.log('connected to mongoDB');
   },
