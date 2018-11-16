@@ -61,4 +61,4 @@ typings/
 .next
 
 # environmental variables
-.sh
+env.sh
