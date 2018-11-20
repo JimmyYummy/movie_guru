@@ -15,7 +15,7 @@ const logger = require('morgan');
 const mysql = require('mysql');
 const mongoose = require('mongoose');
 // include routes
-//const routes = require('./routes');
+const routes = require('./routes/routes');
 
 // env variable check
 if (!process.env.MONGODB_URI || !process.env.MYSQL_URI) {
@@ -31,13 +31,7 @@ const connection = mysql.createConnection(process.env.MYSQL_URI);
 
 connection.connect();
 
-connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-  if (error) throw error;
-  console.log('The solution is: ', results[0].solution);
-});
-
 // mongodb database setup
-
 
 // start connection to MONGODB
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true}).then(
@@ -68,7 +62,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // include routes to use
-//app.use('/', routes);
+app.use('/', routes.ONG_ROUTES);
+app.use('/', routes.DOUGLAS_ROUTES);
+app.use('/', routes.PETROSKY_ROUTES);
+app.use('/', routes.WANG_ROUTES);
 
 app.use('/unauthorized', (req, res) => {
   res.render('error_views/unauthorized', { user: req.user });
