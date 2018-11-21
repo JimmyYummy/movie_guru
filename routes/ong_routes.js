@@ -1,9 +1,16 @@
 const express = require('express');
 const Models = require('../models/models');
+const connection = require('../sqlConnection');
 const router = express.Router();
 
+
 router.get('/', (req, res, next) => {
-  res.render('index', { movie: 'Star Wars', button: true });
+  connection.query('SELECT COUNT(*) AS count FROM Crew_In', function (err, result) {
+    if (err) throw err;
+    console.log(result);
+    res.render('index', { movie: result[0].count, button: true });
+  });
+
 });
 
 router.get('/no_button', (req, res, next) => {

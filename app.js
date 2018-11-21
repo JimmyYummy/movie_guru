@@ -11,9 +11,8 @@ const path = require('path');
 // include debug modules
 const logger = require('morgan');
 
-//mysql
-const mysql = require('mysql');
 const mongoose = require('mongoose');
+
 // include routes
 const routes = require('./routes/routes');
 
@@ -25,11 +24,6 @@ if (!process.env.MONGODB_URI || !process.env.MYSQL_URI) {
 // create server with express: port defaults to 3000
 const app = express();
 const port = process.env.PORT || 3000;
-
-// sql database setup
-const connection = mysql.createConnection(process.env.MYSQL_URI);
-
-connection.connect();
 
 // mongodb database setup
 
@@ -67,9 +61,6 @@ app.use('/', routes.DOUGLAS_ROUTES);
 app.use('/', routes.PETROSKY_ROUTES);
 app.use('/', routes.WANG_ROUTES);
 
-app.use('/unauthorized', (req, res) => {
-  res.render('error_views/unauthorized', { user: req.user });
-});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

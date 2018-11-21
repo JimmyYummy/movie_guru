@@ -14,7 +14,7 @@ const UserSchema = new Schema({
     required: true
   },
   ratings: { // movie_id: rating
-
+    type: Object
   }
 });
 
