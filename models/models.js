@@ -5,13 +5,17 @@ const { Schema } = mongoose;
 const UserSchema = new Schema({
   username: { // the username of the user
     type: String,
-    required: true,
     unique: true,
     dropDups: true
   },
   password: { // the password of the user *** no-encryption ***
     type: String,
-    required: true
+  },
+  facebookId: {
+    type: String
+  },
+  displayName: {
+    type: String
   },
   ratings: { // movie_id: rating
     type: Object

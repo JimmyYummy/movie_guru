@@ -11,7 +11,19 @@ const path = require('path');
 // include debug modules
 const logger = require('morgan');
 
+// include verification
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const FacebookStrategy = require('passport-facebook');
+
+// include mongodb connection
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo')(session);
+
+// include User
+const models = require('./models/models');
 
 // include routes
 const routes = require('./routes/routes');
@@ -50,12 +62,58 @@ app.engine('.hbs', exphbs({
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 
-// add middleware to parse body requests and log requests
+// add middleware to parse body requests and login session information
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser(process.env.SECRET));
+app.use(express.static('public'));
+app.use(session({
+  secret: process.env.SECRET,
+  name: 'session',
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  proxy: true,
+  resave: true,
+  saveUninitialized: true
+}));
+
+// passport authentication
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  models.User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    callbackURL: "http://localhost:3000/auth/facebook/callback",
+    profileFields: ['displayName']
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    models.User.findOneAndUpdate({ facebookId: profile.id}, {
+      $setOnInsert: {
+        facebookId: profile.id,
+        displayName: profile.displayName
+      }
+    }, {
+      new: true,   // return new doc if one is upserted
+      upsert: true // insert the document if it does not exist
+    }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // include routes to use
+app.use('/', routes.AUTH_ROUTES(passport)); // authentication routes
 app.use('/', routes.ONG_ROUTES);
 app.use('/', routes.DOUGLAS_ROUTES);
 app.use('/', routes.PETROSKY_ROUTES);

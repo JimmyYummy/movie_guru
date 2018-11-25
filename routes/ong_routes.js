@@ -3,11 +3,9 @@ const Models = require('../models/models');
 const connection = require('../sqlConnection');
 const router = express.Router();
 
-
 router.get('/', (req, res, next) => {
   connection.query('SELECT COUNT(*) AS count FROM Crew_In', function (err, result) {
     if (err) throw err;
-    console.log(result);
     res.render('index', { movie: result[0].count, button: true });
   });
 });
