@@ -10,7 +10,6 @@ router.get('/', (req, res, next) => {
     console.log(result);
     res.render('index', { movie: result[0].count, button: true });
   });
-
 });
 
 router.get('/no_button', (req, res, next) => {
