@@ -1,0 +1,35 @@
+<!--<link rel="stylesheet" href="../css/index.css">-->
+<div class="content">
+    <div>
+        <div>Moive Infos:</div>
+        <ul>
+            <li>Movie Title: {{movie.title}}</li>
+            <li>Length: {{movie.runtime}} minutes</li>
+            <li>Year Released: {{movie.release_year}}</li>
+            <!--change the rating latter-->
+            <li>Rating: {{movie.rating}}</li>
+        </ul>
+    </div>
+
+    <div>
+        <div>
+            <div>Casts:</div>
+            <ul>
+                {{#each casts}}
+                    <li><b>{{charac}}:</b>  {{name}}</li>
+                {{/each}}
+            </ul>
+        </div>
+        <div>
+            <div>Crews:</div>
+            <ul>
+                {{#each crews as |people job|}}
+                    <ul><b>{{job}}:</b>    {{people}}</ul>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+
+    <div id="similar-movies"></div>
+</div>
+<script src="/js/smv.js"></script>
