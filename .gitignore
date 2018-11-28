@@ -62,3 +62,6 @@ typings/
 
 # environmental variables
 env.sh
+
+# macosx file
+.DS_Store
