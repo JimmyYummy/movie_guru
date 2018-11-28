@@ -1,5 +1,7 @@
 const connection = require('../sqlConnection');
 
+// Search function. Takes a search term and call-back function.
+// Callback function should expect a singel parameter: an array of result objects
 var search = function (search_term, cb) {
     // Form conditions for secondary search based on individual terms in search
     let terms = search_term.split(' ');
