@@ -14,6 +14,8 @@ var search = function (search_term, cb) {
     // Second query will be searching for the individual parts of the search
     let sql2 = "SELECT DISTINCT title, runtime, rating FROM Movie WHERE " + conditions + ' ORDER BY title';
 
+    // Planning on suplementing this query if we want a more robust search later
+
     // Combine the queries
     let sql = '(' + sql1 + ') UNION (' + sql2 + ');';
 

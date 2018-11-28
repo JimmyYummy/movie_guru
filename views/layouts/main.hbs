@@ -9,10 +9,43 @@
       <link rel="stylesheet" type="text/css" href="css/main.css">
       <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
     </head>
+
+    <!-- <navbar> -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Movie Guru</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+
+            <!-- Add link to home page here -->
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
+            </li>
+
+
+            <!-- Add link to my movies here -->
+            <li class="nav-item active">
+              <a class="nav-link" href="/">My Movies<span class="sr-only">(current)</span></a>
+            </li>
+
+            <!-- Add any other links we want here -->
+
+        </ul>
+      </div>
+
+      <!-- This is where the search term is submitted -->
+      <!-- The query parameter is called search_term (as you can see below) and it is submitted as a parameter to the link specified by 'action' in the form. Place the page you want to receive this parameter at here. It will probably just be as it is now though. -->
+      <form class="form-inline" method="GET" action="/">
+        <input class="form-control mr-sm-2" type="text" name="search_term" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </nav>
+
     <body>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <div class="content">
-        <!-- <navbar> -->
         {{{body}}}
       </div>
     </body>
