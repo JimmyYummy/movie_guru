@@ -3,6 +3,15 @@ const Models = require('../models/models');
 const connection = require('../sqlConnection');
 const router = express.Router();
 
+// Uncomment lines 7-13 to see example of how to use search function
+// const search = require('../helpers/search');
+// router.get('/', (req, res, next) => {
+//     search('Love Is', function (results) {
+//         console.log(results);
+//         res.render('index', { movie: results[0].title, button: true });
+//     });
+// });
+
 router.get('/', (req, res, next) => {
   connection.query('SELECT COUNT(*) AS count FROM Crew_In', function (err, result) {
     if (err) throw err;
