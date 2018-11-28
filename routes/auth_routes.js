@@ -39,7 +39,14 @@ module.exports = (passport) => {
   });
 
   // the wall
+  router.use((req, res, next) => {
+    // redirect to login if not signed in
+    if (!req.user) {
+      return res.redirect('/login');
+    }
 
+    return next();
+  });
 
   return router;
 };
