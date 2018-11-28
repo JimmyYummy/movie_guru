@@ -18,6 +18,10 @@ module.exports = (passport) => {
   //   res.redirect(returnTo || '/');
   // });
 
+  router.get('/login', (req, res) => {
+    res.render('login', { layout: false });
+  });
+
   router.get('/auth/facebook',
     passport.authenticate('facebook'));
 
@@ -33,6 +37,9 @@ module.exports = (passport) => {
     req.logout();
     res.redirect('/login');
   });
+
+  // the wall
+
 
   return router;
 };

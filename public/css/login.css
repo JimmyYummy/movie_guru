@@ -1,0 +1,28 @@
+body {
+  font-family: 'Helvetica';
+}
+
+h1 {
+  font-family: 'Open sans', sans-serif !important;
+}
+
+footer {
+  font-family: 'Georgia', serif;
+}
+
+.btn-signin {
+  background-color: #5d5d5d !important;
+  color: #ffffff !important;
+  border: none;
+}
+
+.container {
+    margin-top: 3%;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.small-margin {
+    margin-left: 0.5% !important;
+    margin-right: 5%;
+}
