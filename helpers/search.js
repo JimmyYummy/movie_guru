@@ -12,14 +12,14 @@ var search = function (search_term, cb) {
     conditions = conditions.substring(0, conditions.length - 4);
 
     // First query will be searching for exact matches
-    let sql1 = "SELECT DISTINCT title, runtime, rating FROM Movie WHERE title LIKE '%" + search_term + "%' ORDER BY title";
+    let sql1 = "SELECT DISTINCT title, release_year, runtime, rating FROM Movie WHERE title LIKE '%" + search_term + "%' ORDER BY title";
     // Second query will be searching for the individual parts of the search
-    let sql2 = "SELECT DISTINCT title, runtime, rating FROM Movie WHERE " + conditions + ' ORDER BY title';
+    let sql2 = "SELECT DISTINCT title, release_year, runtime, rating FROM Movie WHERE " + conditions + ' ORDER BY title';
 
     // Planning on suplementing this query if we want a more robust search later
 
     // Combine the queries
-    let sql = '(' + sql1 + ') UNION (' + sql2 + ');';
+    let sql = '(' + sql1 + ') UNION (' + sql2 + ') LIMIT 10';
 
     // Execute query
     connection.query(sql, function(err, result) {
@@ -31,6 +31,7 @@ var search = function (search_term, cb) {
         for (i in result) {
             m = {};
             m.title = result[i].title;
+            m.year = result[i].release_year;
             m.runtime = result[i].runtime;
             m.rating = result[i].rating;
             rs.push(m);
