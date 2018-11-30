@@ -2,15 +2,20 @@ const express = require('express');
 const Models = require('../models/models');
 const connection = require('../sqlConnection');
 const router = express.Router();
+const search = require('../helpers/search');
 
-// Uncomment lines 7-13 to see example of how to use search function
-// const search = require('../helpers/search');
-// router.get('/', (req, res, next) => {
-//     search('Love Is', function (results) {
-//         console.log(results);
-//         res.render('index', { movie: results[0].title, button: true });
-//     });
-// });
+router.get('/', (req, res, next) => {
+  var search_param = req.query.search_term;
+  console.log(req.query.search_term);
+  if (search_param === '' || search_param === undefined) {
+    res.render('index', { movie: 'no search!', button: true });
+  } else {
+    search(search_param, function (results) {
+            console.log(results);
+            res.render('index', { movie: search_param, button: true });
+    });
+  }
+});
 
 router.get('/', (req, res, next) => {
   connection.query('SELECT COUNT(*) AS count FROM Crew_In', function (err, result) {
