@@ -16,4 +16,13 @@ $(document).ready(() => {
       }
     })
   });
+
+  // $('#searchBtn').on('click',function(){
+  //   event.preventDefault();
+  //   console.log("Hey bros");
+  //   console.log($('#searchBar').html());
+
+  // });
+
+
 });
