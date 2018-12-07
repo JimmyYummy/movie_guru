@@ -3,6 +3,7 @@
     width: 70em;
     margin-left: auto ;
     margin-right: auto ;
+    margin-bottom: 5em;
 }
 
 .icon-flex {
@@ -47,4 +48,3 @@ i {
     text-align: left;
     border-left-style: groove;
 }
-

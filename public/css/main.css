@@ -3,3 +3,7 @@
   margin-right: 5%;
 
 }
+
+.navbar-nav>li>a:hover{
+  text-decoration: underline;
+}
