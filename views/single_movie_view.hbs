@@ -3,15 +3,16 @@
     <div>
         <div class = "icon-flex">
             <i id = "film-icon", class="fa fa-film fa-2x" aria-hidden="true"></i>
-            <h1>{{movie.title}}</h1>
+            <h1>{{sql_data.movie.title}}</h1>
         </div>
         <div id = "info">
             <ul>
-                <li>Length: {{movie.runtime}} minutes</li>
-                <li>Year Released: {{movie.release_year}}</li>
+                <li>Length: {{sql_data.movie.runtime}} minutes</li>
+                <li>Year Released: {{sql_data.movie.release_year}}</li>
                 <!--change the rating latter-->
-                <li>Rating: {{movie.rating}}</li>
-                <li>Your Rating: <form id = "user_rating"> <input type="text"> <input type="submit"> </form> </li>
+                <li>Rating: {{sql_data.movie.rating}}</li>
+                <li>Your Rating: <form id = "user_rating"> <input type="text"> <input type="submit"> </form> 
+                {{user_Id}}</li>
             </ul>
         </div>
     </div>
@@ -20,18 +21,18 @@
         <div id = "cast-block">
             <div class = "icon-flex">
                 <i class="fa fa-street-view fa-lg" aria-hidden="true"></i>
-                <h3>Casts</h3>
+                <h3>Cast</h3>
             </div>
-                {{#each casts}}
+                {{#each sql_data.casts}}
                     <div class = "entry"><div class = "entry-left">{{charac}}:</div><div class = "entry-right">{{name}}</div></div>
                 {{/each}}
         </div>
         <div id = "crew-block">
             <div class = "icon-flex">
                 <i class="fa fa-users fa-lg" aria-hidden="true"></i>
-                <h3>Crews</h3>
+                <h3>Crew</h3>
             </div>
-                {{#each crews as |people job|}}
+                {{#each sql_data.crews as |people job|}}
                     <div class = "entry"><div class = "entry-left">{{job}}:</div><div class = "entry-right">{{people}}</div></div>
                 {{/each}}
         </div>

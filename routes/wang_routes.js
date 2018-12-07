@@ -61,7 +61,21 @@ router.get('/movie/:movie_id', function (req, res, next) {
                 return;
             }
             data.casts = result;
-            res.render("single_movie_view", data)
+            // var tmp=""
+            // console.log("hey");
+            // console.log(req.user);
+            // console.log(req.user.facebookId);
+            var uzer  = Models.User.find({ facebookId: req.user.facebookId});
+            console.log("Facebook ID coming in: %s\n",req.user.facebookId);
+            var ratQuery = Models.User.findOne({facebookId: req.user.facebookId}, 
+                function(err,uz){
+                if(err) return handleError(err);
+                console.log('facebookId: %s \t ratings: %s\n', uz.facebookId, uz.ratings);
+            });
+            console.log("________________________________________________________________________________________");
+            // console.log(ratQuery);
+            console.log("________________________________________________________________________________________");
+            res.render("single_movie_view", {sql_data:data, user_Id:req.user.facebookId});
         });
     }
 
