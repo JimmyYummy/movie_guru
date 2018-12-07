@@ -99,7 +99,8 @@ passport.use(new FacebookStrategy({
     models.User.findOneAndUpdate({ facebookId: profile.id}, {
       $setOnInsert: {
         facebookId: profile.id,
-        displayName: profile.displayName
+        displayName: profile.displayName,
+        ratings: []
       }
     }, {
       new: true,   // return new doc if one is upserted
