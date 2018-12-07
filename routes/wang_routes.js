@@ -70,12 +70,26 @@ router.get('/movie/:movie_id', function (req, res, next) {
             var ratQuery = Models.User.findOne({facebookId: req.user.facebookId}, 
                 function(err,uz){
                 if(err) return handleError(err);
-                console.log('facebookId: %s \t ratings: %s\n', uz.facebookId, uz.ratings);
+                var foundIndex=-1;
+                for(var i=0;i<uz.ratings.length;i++){
+                    console.log("%d) %s\n",i,uz.ratings[i]);
+                    if(uz.ratings[i].movID==req.params.movie_id){
+                        found=i;
+                        break;
+                    }
+                }
+                var mongo_info={};
+                if(foundIndex!=-1){
+                    mongo_info.rating=uz.ratings[i].rating;
+                    res.render("single_movie_view", {sql_data:data, goose_data:mongo_info});
+                }else{
+                    mongo_info.rating=2;
+                    res.render("single_movie_view", {sql_data:data, goose_data:mongo_info});
+                }
             });
-            console.log("________________________________________________________________________________________");
+            // console.log("________________________________________________________________________________________");
             // console.log(ratQuery);
             console.log("________________________________________________________________________________________");
-            res.render("single_movie_view", {sql_data:data, user_Id:req.user.facebookId});
         });
     }
 
