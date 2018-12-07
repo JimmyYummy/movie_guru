@@ -22,13 +22,13 @@ var search = function (search_term, cb) {
     bi_conditions = bi_conditions.substring(0, bi_conditions.length - 4);
 
     // First query will be searching for exact matches
-    let sql1 = "SELECT DISTINCT title, release_year, runtime, rating FROM Movie WHERE title LIKE '%" + search_term + "%'";
+    let sql1 = "SELECT DISTINCT movie_id, title, release_year, runtime, rating FROM Movie WHERE title LIKE '%" + search_term + "%'";
     // Second query will be searching for cast members
-    let sql2 = "SELECT DISTINCT title, release_year, runtime, rating FROM Movie m JOIN (Cast_In ci JOIN Movie_Cast c ON c.id = ci.cast_id) ON ci.movie_id = m.movie_id WHERE c.name = '" + search_term + "'";
+    let sql2 = "SELECT DISTINCT movie_id, title, release_year, runtime, rating FROM Movie m JOIN (Cast_In ci JOIN Movie_Cast c ON c.id = ci.cast_id) ON ci.movie_id = m.movie_id WHERE c.name = '" + search_term + "'";
     // Third query will be searching for the bigram parts of the search
-    let sql3 = "SELECT DISTINCT title, release_year, runtime, rating FROM Movie WHERE " + bi_conditions;
+    let sql3 = "SELECT DISTINCT movie_id, title, release_year, runtime, rating FROM Movie WHERE " + bi_conditions;
     // Fourth query will be searching for the individual parts of the search
-    let sql4 = "SELECT DISTINCT title, release_year, runtime, rating FROM Movie WHERE " + uni_conditions;
+    let sql4 = "SELECT DISTINCT movie_id, title, release_year, runtime, rating FROM Movie WHERE " + uni_conditions;
 
     // Planning on suplementing this query if we want a more robust search later
 
