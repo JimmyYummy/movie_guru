@@ -1,12 +1,27 @@
 <link rel="stylesheet" href="/css/index.css">
 <div class="content">
-  <div id="movie">
-    {{movie}}
-  </div>
   {{#if button}}
     <button id="button" type="button" class="btn btn-primary">Print to server</button>
   {{/if}}
   {{> partial}}
   {{> logout}}
 </div>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Title</th>
+      <th scope="col">Year</th>
+      <th scope="col">Runtime</th>
+      <th scope="col">Rating</th>
+    </tr>
+  </thead>
+	{{#each movies}}
+		<tr>
+			<td> {{this.title}} ({{{this.ref}}}link</a>) </td>
+			<td> {{this.year}} </td>
+			<td> {{this.runtime}} </td>
+			<td> {{this.rating}} </td>
+		</tr>
+	{{/each}}
+</table>
 <script src="/js/index.js"></script>

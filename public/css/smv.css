@@ -1,0 +1,50 @@
+.content {
+    margin-top: 2em;
+    width: 70em;
+    margin-left: auto ;
+    margin-right: auto ;
+    margin-bottom: 5em;
+}
+
+.icon-flex {
+    display: flex;
+    align-items: center;
+}
+
+i {
+    margin-right: 0.5em;
+}
+
+#info {
+    color: dimgrey;
+}
+
+.entry {
+    width: 65em;
+    margin-left: auto ;
+    margin-right: auto ;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    border-style: groove;
+}
+
+.entry ~ .entry {
+    border-top: 0;
+}
+
+.entry-left {
+    margin: 0;
+    flex: 1;
+    padding: 0;
+    text-align: left;
+    font-weight: bold;
+}
+
+.entry-right {
+    margin: 0;
+    flex: 3;
+    padding: 0;
+    text-align: left;
+    border-left-style: groove;
+}

@@ -76,7 +76,7 @@ var movie_genre_table = `CREATE TABLE Movie_Genre(
 	FOREIGN KEY(genre_name) REFERENCES Genre(name) ON DELETE CASCADE
 )`
 
-connection.query(movie_genre_table, function (err, result) {
+connection.query(cast_in_table, function (err, result) {
   if (err) throw err;
   console.log("Table created", result);
 });
