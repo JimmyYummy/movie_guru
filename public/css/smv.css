@@ -48,3 +48,7 @@ i {
     text-align: left;
     border-left-style: groove;
 }
+
+#similar-movies{
+    margin-top: 3em;
+}
