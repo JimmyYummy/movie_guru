@@ -1,3 +1,5 @@
 $(document).ready(() => {
-  console.log('hi');
+  $('#facebook-logout').on('click', function() {
+    window.location.href = '/logout';
+  });
 });

@@ -8,7 +8,6 @@ module.exports = router;
 
 
 router.get('/movie/:movie_id', function (req, res, next) {
-    console.log("\n\n\n we're here!!!\n\n\n");
     function queryMovie(data) {
 
         let sql = `SELECT * FROM Movie WHERE movie_id = "${req.params.movie_id}";`;
@@ -55,7 +54,6 @@ router.get('/movie/:movie_id', function (req, res, next) {
     }
 
     function queryCast(data) {
-        console.log("QUERY CAST!\n");
         let sql = `SELECT Cast_In.charac, Movie_Cast.name FROM Cast_In JOIN Movie_Cast ON Cast_In.cast_id = Movie_Cast.id WHERE Cast_In.movie_id = "${req.params.movie_id}" ORDER BY charac;`
         connection.query(sql, function(err, result) {
             if (err) {
@@ -66,14 +64,9 @@ router.get('/movie/:movie_id', function (req, res, next) {
                 return;
             }
             data.casts = result;
-            console.log("ratquery");
-            console.log("facebookId: ",req.user.facebookId);
             var cb1=function(err, uz1){
-                console.log(uz1.ratings);
                 var mongo_info={};
-                console.log(req.query);
                 if(req.query.movie_rating){
-                    console.log("WE HAVE A MOVIE RATING ",req.query.movie_rating);
                     uz1.ratings[req.params.movie_id]=req.query.movie_rating;
                     mongo_info.rating=req.query.movie_rating;
                     Models.User.update({facebookId:req.user.facebookId},uz1,{upsert:true},function(err){
@@ -81,10 +74,10 @@ router.get('/movie/:movie_id', function (req, res, next) {
                         res.render('single_movie_view',{sql_data:data,mongo_info});
                     })
 
-                }else{
-                    mongo_info.rating= uz1.ratings.hasOwnProperty(req.params.movie) ? 
-                    uz1.ratings[req.params.movie_id] : "" ;
-                    res.render('single_movie_view',{sql_data:data,mongo_info});
+                } else{
+                    mongo_info.rating= uz1.ratings.hasOwnProperty(req.params.movie_id) ?
+                    uz1.ratings[req.params.movie_id] : "?" ;
+                    res.render('single_movie_view',{sql_data:data,goose_data: mongo_info});
                 }
 
             };
@@ -95,4 +88,3 @@ router.get('/movie/:movie_id', function (req, res, next) {
     data = {};
     queryMovie(data);
 });
-
