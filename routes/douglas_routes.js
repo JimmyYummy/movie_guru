@@ -26,4 +26,9 @@ router.get('/my_movies', (req, res) => {
   });
 });
 
+router.get('/my_recommendations', (req, res) => {
+  // get movies here
+  res.render('index', {movies});
+});
+
 module.exports = router;
