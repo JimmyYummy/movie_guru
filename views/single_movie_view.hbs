@@ -11,7 +11,7 @@
                 <li>Year Released: {{sql_data.movie.release_year}}</li>
                 <!--change the rating latter-->
                 <li>Rating: {{sql_data.movie.rating}}</li>
-                <li>Your Rating: <form id = "user_rating"> <input type="text" value="{{goose_data.rating}}"> <input type="submit"> </form> 
+                <li>Your Rating: <form id = "user_rating"> <input type="text" id="ratVal" value="{{goose_data.rating}}"> <input type="submit" id="ratBtn"> </form> 
                 {{user_Id}}</li>
             </ul>
         </div>

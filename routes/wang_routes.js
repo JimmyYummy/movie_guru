@@ -5,8 +5,12 @@ const router = express.Router();
 
 module.exports = router;
 
+
+
 router.get('/movie/:movie_id', function (req, res, next) {
+    console.log("\n\n\n we're here!!!\n\n\n");
     function queryMovie(data) {
+
         let sql = `SELECT * FROM Movie WHERE movie_id = "${req.params.movie_id}";`;
         connection.query(sql, function (err, result) {
             if (err) {
@@ -51,6 +55,7 @@ router.get('/movie/:movie_id', function (req, res, next) {
     }
 
     function queryCast(data) {
+        console.log("QUERY CAST!\n");
         let sql = `SELECT Cast_In.charac, Movie_Cast.name FROM Cast_In JOIN Movie_Cast ON Cast_In.cast_id = Movie_Cast.id WHERE Cast_In.movie_id = "${req.params.movie_id}" ORDER BY charac;`
         connection.query(sql, function(err, result) {
             if (err) {
@@ -61,35 +66,29 @@ router.get('/movie/:movie_id', function (req, res, next) {
                 return;
             }
             data.casts = result;
-            // var tmp=""
-            // console.log("hey");
-            // console.log(req.user);
-            // console.log(req.user.facebookId);
-            var uzer  = Models.User.find({ facebookId: req.user.facebookId});
-            console.log("Facebook ID coming in: %s\n",req.user.facebookId);
-            var ratQuery = Models.User.findOne({facebookId: req.user.facebookId}, 
-                function(err,uz){
-                if(err) return handleError(err);
-                var foundIndex=-1;
-                for(var i=0;i<uz.ratings.length;i++){
-                    console.log("%d) %s\n",i,uz.ratings[i]);
-                    if(uz.ratings[i].movID==req.params.movie_id){
-                        found=i;
-                        break;
-                    }
-                }
+            console.log("ratquery");
+            console.log("facebookId: ",req.user.facebookId);
+            var cb1=function(err, uz1){
+                console.log(uz1.ratings);
                 var mongo_info={};
-                if(foundIndex!=-1){
-                    mongo_info.rating=uz.ratings[i].rating;
-                    res.render("single_movie_view", {sql_data:data, goose_data:mongo_info});
+                console.log(req.query);
+                if(req.query.movie_rating){
+                    console.log("WE HAVE A MOVIE RATING ",req.query.movie_rating);
+                    uz1.ratings[req.params.movie_id]=req.query.movie_rating;
+                    mongo_info.rating=req.query.movie_rating;
+                    Models.User.update({facebookId:req.user.facebookId},uz1,{upsert:true},function(err){
+                        if(err)console.log("Update Error ",err);
+                        res.render('single_movie_view',{sql_data:data,mongo_info});
+                    })
+
                 }else{
-                    mongo_info.rating=2;
-                    res.render("single_movie_view", {sql_data:data, goose_data:mongo_info});
+                    mongo_info.rating= uz1.ratings.hasOwnProperty(req.params.movie) ? 
+                    uz1.ratings[req.params.movie_id] : "" ;
+                    res.render('single_movie_view',{sql_data:data,mongo_info});
                 }
-            });
-            // console.log("________________________________________________________________________________________");
-            // console.log(ratQuery);
-            console.log("________________________________________________________________________________________");
+
+            };
+            Models.User.findOne({facebookId:req.user.facebookId},cb1);
         });
     }
 
