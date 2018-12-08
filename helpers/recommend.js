@@ -24,7 +24,7 @@ var recommend = function (rated_movies, cb) {
             if (! cast_ratings.hasOwnProperty(result[i].cast_id)) {
                 cast_ratings[result[i].cast_id] = {ratings:[]};
             }
-            var rating = rated_movies[result[i].movie_id];
+            var rating = Number(rated_movies[result[i].movie_id]);
             cast_ratings[result[i].cast_id].ratings.push(rating);
         }
 
