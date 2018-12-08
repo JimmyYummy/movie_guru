@@ -1,6 +1,7 @@
 const express = require('express');
 const Models = require('../models/models');
 const connection = require('../sqlConnection');
+const recommend = require('../helpers/recommend');
 const router = express.Router();
 
 module.exports = router;
@@ -8,6 +9,19 @@ module.exports = router;
 
 
 router.get('/movie/:movie_id', function (req, res, next) {
+
+    function getRecos(data) {
+        var mid = req.params.movie_id;
+        var js = {};
+        js[mid] = '10';
+        console.log(js);
+        recommend(js, function (results){
+            data.movies = results.slice(0,5);
+            queryMovie(data);
+        })
+
+    }
+
     function queryMovie(data) {
 
         let sql = `SELECT * FROM Movie WHERE movie_id = "${req.params.movie_id}";`;
@@ -71,13 +85,13 @@ router.get('/movie/:movie_id', function (req, res, next) {
                     mongo_info.rating=req.query.movie_rating;
                     Models.User.update({facebookId:req.user.facebookId},uz1,{upsert:true},function(err){
                         if(err)console.log("Update Error ",err);
-                        res.render('single_movie_view',{sql_data:data,mongo_info});
+                        res.render('single_movie_view',{sql_data:data, movies: data.movies,mongo_info});
                     })
 
                 } else{
                     mongo_info.rating= uz1.ratings.hasOwnProperty(req.params.movie_id) ?
                     uz1.ratings[req.params.movie_id] : "?" ;
-                    res.render('single_movie_view',{sql_data:data,goose_data: mongo_info});
+                    res.render('single_movie_view',{sql_data:data, movies: data.movies, goose_data: mongo_info});
                 }
 
             };
@@ -86,5 +100,5 @@ router.get('/movie/:movie_id', function (req, res, next) {
     }
 
     data = {};
-    queryMovie(data);
+    getRecos(data);
 });

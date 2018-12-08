@@ -2,6 +2,9 @@ const express = require('express');
 const Models = require('../models/models');
 const router = express.Router();
 const connection = require('../sqlConnection');
+const recommend = require('../helpers/recommend')
+const defSearch = require('../helpers/defSearch')
+
 
 router.get('/my_movies', (req, res) => {
   console.log('hit my_movies');
@@ -28,7 +31,17 @@ router.get('/my_movies', (req, res) => {
 
 router.get('/my_recommendations', (req, res) => {
   // get movies here
-  res.render('index', {movies});
+    function callback(results) {
+        console.log(results);
+        res.render('index', { movies:results  });
+    }
+
+    console.log(req.user.ratings);
+    if (Object.keys(req.user.ratings).length === 0) {
+        defSearch(callback);
+    } else {
+        recommend(req.user.ratings, callback);
+    }
 });
 
 module.exports = router;
