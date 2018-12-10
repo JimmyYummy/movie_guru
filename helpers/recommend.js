@@ -68,7 +68,6 @@ var recommend = function (rated_movies, cb) {
               return;
           }
           var rs = [];
-          console.log(result);
           for (i in result) {
               m = {};
               m.title = result[i].title;

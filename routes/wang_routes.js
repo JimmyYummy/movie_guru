@@ -14,7 +14,6 @@ router.get('/movie/:movie_id', function (req, res, next) {
         var mid = req.params.movie_id;
         var js = {};
         js[mid] = '10';
-        console.log(js);
         recommend(js, function (results){
             data.movies = results.slice(0,5);
             queryMovie(data);
@@ -81,6 +80,7 @@ router.get('/movie/:movie_id', function (req, res, next) {
             var cb1=function(err, uz1){
                 var mongo_info={};
                 if(req.query.movie_rating){
+                    uz1.lastUpdated = new Date();
                     uz1.ratings[req.params.movie_id]=req.query.movie_rating;
                     mongo_info.rating=req.query.movie_rating;
                     Models.User.update({facebookId:req.user.facebookId},uz1,{upsert:true},function(err){

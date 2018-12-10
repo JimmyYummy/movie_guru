@@ -50,7 +50,6 @@ var search = function (search_term, cb) {
             return;
         }
         var rs = [];
-        console.log(result);
         for (i in result) {
             m = {};
             m.title = result[i].title;

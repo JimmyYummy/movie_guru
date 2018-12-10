@@ -11,7 +11,6 @@ $('#ratBtn').on('click', function(event) {
       },
       success(res) {
         console.log('success');
-        window.location.href=window.location.href;
       }
     })
   });

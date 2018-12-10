@@ -29,19 +29,19 @@ router.get('/my_movies', (req, res) => {
   });
 });
 
-router.get('/my_recommendations', (req, res) => {
-  // get movies here
-    function callback(results) {
-        console.log(results);
-        res.render('index', { movies:results  });
-    }
-
-    console.log(req.user.ratings);
-    if (Object.keys(req.user.ratings).length === 0) {
-        defSearch(callback);
-    } else {
-        recommend(req.user.ratings, callback);
-    }
-});
+// router.get('/my_recommendations', (req, res) => {
+//   // get movies here
+//     function callback(results) {
+//         console.log(results);
+//         res.render('index', { movies:results  });
+//     }
+//
+//     console.log(req.user.ratings);
+//     if (Object.keys(req.user.ratings).length === 0) {
+//         defSearch(callback);
+//     } else {
+//         recommend(req.user.ratings, callback);
+//     }
+// });
 
 module.exports = router;

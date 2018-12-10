@@ -8,15 +8,12 @@ const defSearch = require('../helpers/defSearch');
 
 router.get('/', (req, res, next) => {
   var search_param = req.query.search_term;
-  console.log(req.query.search_term);
   if (search_param === '' || search_param === undefined) {
   	defSearch( function(results){
-  		console.log(results);
 	    res.render('index', { movie: 'no search!', button: true, movies:results });
   	});
   } else {
     search(search_param, function (results) {
-            console.log(results);
             res.render('index', { movie: search_param, button: true, movies:results  });
     });
   }

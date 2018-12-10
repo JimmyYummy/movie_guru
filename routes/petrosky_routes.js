@@ -6,18 +6,44 @@ const router = express.Router();
 
 module.exports = router;
 
-router.get('/recommend', function (req, res, next) {
+router.get('/my_recommendations', function (req, res, next) {
+    // check cache
+    Models.User.findOne({ facebookId: req.user.facebookId }, function(err, user) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(user.lastUpdated);
+        console.log(user.lastCache);
+        if (user.lastUpdated < user.lastCache) {
 
-    function callback(results) {
-        console.log(results);
-        res.render('index', {button: true, movies:results  });
+          console.log('grabbing cache');
+          res.render('index', { movies: user.cache });
+        } else {
+              if (Object.keys(req.user.ratings).length === 0) {
+                  defSearch(callback);
+              } else {
+                  recommend(req.user.ratings, callback);
+              }
+
+        }
+      }
+    })
+
+    // recommendation algorithm
+    var callback = function callback(results) {
+        Models.User.findOne({ facebookId: req.user.facebookId }, function(err, user) {
+          if (err) {
+            console.log(err);
+          }
+          user.lastCache = new Date();
+          user.cache = results;
+          Models.User.update({ facebookId: req.user.facebookId }, user ,{upsert:true},function(err){
+              if (err) {
+                console.log("Update Error", err);
+              }
+              res.render('index', { movies:results });
+          })
+        });
     }
 
-    console.log(req.user.ratings);
-    if (Object.keys(req.user.ratings).length === 0) {
-        defSearch(callback);
-    } else {
-        recommend(req.user.ratings, callback);
-    }
-})
-
+});

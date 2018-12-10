@@ -11,6 +11,15 @@ const UserSchema = new Schema({
   },
   ratings: { // movie_id: rating
     type: Object
+  },
+  lastUpdated: {
+    type: Date
+  },
+  lastCache: {
+    type: Date
+  },
+  cache: {
+    type: Object
   }
 });
 
