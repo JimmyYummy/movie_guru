@@ -18,9 +18,6 @@ router.get('/', (req, res, next) => {
     } else {
       res.render('index', { movie: 'no search!', movies: home_results });
     }
-  	// defSearch( function(results){
-	  //   res.render('index', { movie: 'no search!', movies: results });
-  	// });
   } else {
     search(search_param, function (results) {
       res.render('index', { movie: search_param, movies:results  });
