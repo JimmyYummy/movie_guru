@@ -18,6 +18,7 @@ router.get('/movie/:movie_id', function (req, res, next) {
             data.movies = results.slice(0,5);
             queryMovie(data);
         })
+        // queryMovie(data);
 
     }
 
