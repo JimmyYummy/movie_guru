@@ -4,7 +4,7 @@ const connection = require('../sqlConnection');
 // Callback function should expect a singel parameter: an array of result objects
 var defSearch = function (cb) {
 
-    let sql = "SELECT concat('<a href=http://localhost:3000/movie/', movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie WHERE release_year='2017' ORDER BY rating desc LIMIT 11";
+    let sql = "SELECT concat('<a href=https://ancient-plateau-84686.herokuapp.com/movie/', movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie WHERE release_year='2017' ORDER BY rating desc LIMIT 11";
 
     // Execute query
     connection.query(sql, function(err, result) {

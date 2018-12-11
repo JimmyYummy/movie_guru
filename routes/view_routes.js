@@ -38,7 +38,7 @@ router.get('/my_movies', (req, res) => {
 
     // otherwise search
     let movie_ids = Object.keys(user.ratings).map((x) => `'${x}'`);
-    let sql = `SELECT concat('<a href=http://localhost:3000/movie/', movie_id,'>') ref, movie_id, title, release_year as year, runtime, rating FROM Movie WHERE movie_id IN (${movie_ids})`;
+    let sql = `SELECT concat('<a href=https://ancient-plateau-84686.herokuapp.com/movie/', movie_id,'>') ref, movie_id, title, release_year as year, runtime, rating FROM Movie WHERE movie_id IN (${movie_ids})`;
     // sql query
     connection.query(sql, function (err, result) {
       let movies = result ? result.map((x) => {
