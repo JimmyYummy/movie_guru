@@ -5,43 +5,51 @@ const connection = require('../sqlConnection');
 var search = function (search_term, cb) {
     // Form conditions for secondary search based on individual terms in search
     let terms = search_term.split(' ');
-    var bi_conditions = '';
-    var uni_conditions = '';
-    var prev_term = '';
-    for (i in terms) {
-        var term = terms[i].toLowerCase();
-        if (isNaN(term) && term !== 'the' && term !== 'a' && term !== 'of' && term !== 'on' && term !== 'in') {
-            uni_conditions += "title LIKE '%" + term + "%' OR ";
-            if (i > 0) {
-                bi_conditions += "title LIKE '%" + prev_term + ' ' + term + "%' OR ";
-            }
-            prev_term = term;
-        }
-    }
-    uni_conditions = uni_conditions.substring(0, uni_conditions.length - 4);
-    bi_conditions = bi_conditions.substring(0, bi_conditions.length - 4);
+    var sql = "";
 
-    if (uni_conditions.length !== 0) {
-      uni_conditions = 'WHERE ' + uni_conditions;
-    }
-
-    if (bi_conditions.length !== 0) {
-      bi_conditions = 'WHERE ' + bi_conditions;
-    }
-
-    // First query will be searching for exact matches
-    let sql1 = "SELECT DISTINCT concat('<a href=http://localhost:3000/movie/', movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie WHERE title LIKE '%" + search_term + "%'";
+    // Check for actor only search
     // Second query will be searching for cast members
-    let sql2 = "SELECT DISTINCT concat('<a href=http://localhost:3000/movie/', m.movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie m JOIN (Cast_In ci JOIN Movie_Cast c ON c.id = ci.cast_id) ON ci.movie_id = m.movie_id WHERE c.name = '" + search_term + "'";
-    // Third query will be searching for the bigram parts of the search
-    let sql3 = "SELECT DISTINCT concat('<a href=http://localhost:3000/movie/', movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie " + bi_conditions;
-    // Fourth query will be searching for the individual parts of the search
-    let sql4 = "SELECT DISTINCT concat('<a href=http://localhost:3000/movie/', movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie " + uni_conditions;
+    if (terms.length > 0 && terms[0].charAt(0) === '@') {
+      let new_search_term = search_term.substr(1);
+      sql = "SELECT DISTINCT concat('<a href=http://localhost:3000/movie/', m.movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie m JOIN (Cast_In ci JOIN (SELECT id FROM Movie_Cast WHERE name = '" + new_search_term + "') c ON c.id = ci.cast_id) ON ci.movie_id = m.movie_id;";
+    } else {
+      var bi_conditions = '';
+      var uni_conditions = '';
+      var prev_term = '';
+      for (i in terms) {
+          var term = terms[i].toLowerCase();
+          if (isNaN(term) && term !== 'the' && term !== 'a' && term !== 'of' && term !== 'on' && term !== 'in') {
+              uni_conditions += "title LIKE '%" + term + "%' OR ";
+              if (i > 0) {
+                  bi_conditions += "title LIKE '%" + prev_term + ' ' + term + "%' OR ";
+              }
+              prev_term = term;
+          }
+      }
+      uni_conditions = uni_conditions.substring(0, uni_conditions.length - 4);
+      bi_conditions = bi_conditions.substring(0, bi_conditions.length - 4);
 
-    // Planning on suplementing this query if we want a more robust search later
+      if (uni_conditions.length !== 0) {
+        uni_conditions = 'WHERE ' + uni_conditions;
+      }
 
-    // Combine the queries
-    let sql = '(' + sql1 + ') UNION (' + sql2 + ') UNION (' + sql3 + ') UNION (' + sql4 + ') LIMIT 20';
+      if (bi_conditions.length !== 0) {
+        bi_conditions = 'WHERE ' + bi_conditions;
+      }
+
+      // First query will be searching for exact matches
+      let sql1 = "SELECT DISTINCT concat('<a href=http://localhost:3000/movie/', movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie WHERE title LIKE '%" + search_term + "%'";
+      // Second query will be searching for the bigram parts of the search
+      let sql2 = "SELECT DISTINCT concat('<a href=http://localhost:3000/movie/', movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie " + bi_conditions;
+      // Third query will be searching for the individual parts of the search
+      let sql3 = "SELECT DISTINCT concat('<a href=http://localhost:3000/movie/', movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie " + uni_conditions;
+
+      // Planning on suplementing this query if we want a more robust search later
+
+      // Combine the queries
+      sql = '(' + sql1 + ') UNION (' + sql2 + ') UNION (' + sql3 + ') LIMIT 20;';
+    }
+    console.log(sql);
 
     // Execute query
     connection.query(sql, function(err, result) {
