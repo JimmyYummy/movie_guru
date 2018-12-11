@@ -19,11 +19,8 @@ router.get('/my_movies', (req, res) => {
         x.user_rating = user.ratings[x.movie_id];
         return x;
       }) : {};
-
       res.render('index', { movies: result, my_movies: true });
     });
-    // for each movie,
-
   });
 });
 

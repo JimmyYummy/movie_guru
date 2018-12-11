@@ -26,7 +26,6 @@ module.exports = (passport) => {
     if (!req.user) {
       return res.redirect('/login');
     }
-
     return next();
   });
 
