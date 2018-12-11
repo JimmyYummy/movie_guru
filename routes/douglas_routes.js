@@ -7,7 +7,6 @@ const defSearch = require('../helpers/defSearch')
 
 
 router.get('/my_movies', (req, res) => {
-  console.log('hit my_movies');
   Models.User.findOne({ facebookId: req.user.facebookId }, (err, user) => {
     if (err) {
       console.log('err', err);
@@ -16,11 +15,10 @@ router.get('/my_movies', (req, res) => {
     let sql = `SELECT concat('<a href=http://localhost:3000/movie/', movie_id,'>') ref, movie_id, title, release_year as year, runtime, rating FROM Movie WHERE movie_id IN (${movie_ids})`;
     // sql query
     connection.query(sql, function (err, result) {
-      let movies = result.map((x) => {
+      let movies = result ? result.map((x) => {
         x.user_rating = user.ratings[x.movie_id];
         return x;
-      });
-      console.log(movies);
+      }) : {};
 
       res.render('index', { movies: result, my_movies: true });
     });
@@ -28,20 +26,5 @@ router.get('/my_movies', (req, res) => {
 
   });
 });
-
-// router.get('/my_recommendations', (req, res) => {
-//   // get movies here
-//     function callback(results) {
-//         console.log(results);
-//         res.render('index', { movies:results  });
-//     }
-//
-//     console.log(req.user.ratings);
-//     if (Object.keys(req.user.ratings).length === 0) {
-//         defSearch(callback);
-//     } else {
-//         recommend(req.user.ratings, callback);
-//     }
-// });
 
 module.exports = router;
