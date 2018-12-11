@@ -39,6 +39,10 @@ var recommend = function (rated_movies, cb) {
           }
         }
 
+        if (cast_by_avgrating.length === 0) {
+            cb([]);
+        }
+
         function cmp(a, b) {
           if (a.rating > b.rating) {
             return -1;
