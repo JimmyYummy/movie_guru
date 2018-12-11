@@ -1,4 +1,3 @@
-
 // include modules for endpoint processing
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -116,11 +115,7 @@ app.use(passport.session());
 
 // include routes to use
 app.use('/', routes.AUTH_ROUTES(passport)); // authentication routes
-app.use('/', routes.ONG_ROUTES);
-app.use('/', routes.DOUGLAS_ROUTES);
-app.use('/', routes.PETROSKY_ROUTES);
-app.use('/', routes.WANG_ROUTES);
-
+app.use('/', routes.VIEW_ROUTES); // other routes
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -131,10 +126,11 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res) => {
-  console.log('error handler', err);
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error', { user: req.user });
+  if (err.status === 404) {
+    res.status(404).send('Page Not Found: 404')
+  } else {
+    res.status(500).send('Internal Server Error: 500');
+  }
 });
 
 app.listen(port, () => {
