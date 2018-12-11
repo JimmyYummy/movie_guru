@@ -11,7 +11,7 @@ var search = function (search_term, cb) {
     // Second query will be searching for cast members
     if (terms.length > 0 && terms[0].charAt(0) === '@') {
       let new_search_term = search_term.substr(1);
-      sql = "SELECT DISTINCT concat('<a href=http://localhost:3000/movie/', m.movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie m JOIN (Cast_In ci JOIN (SELECT id FROM Movie_Cast WHERE name = '" + new_search_term + "') c ON c.id = ci.cast_id) ON ci.movie_id = m.movie_id;";
+      sql = "SELECT DISTINCT concat('<a href=http://localhost:3000/movie/', m.movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie m JOIN (Cast_In ci JOIN (SELECT id FROM Movie_Cast WHERE name = '" + new_search_term + "') c ON c.id = ci.cast_id) ON ci.movie_id = m.movie_id LIMIT 20;";
     } else {
       var bi_conditions = '';
       var uni_conditions = '';
@@ -49,7 +49,6 @@ var search = function (search_term, cb) {
       // Combine the queries
       sql = '(' + sql1 + ') UNION (' + sql2 + ') UNION (' + sql3 + ') LIMIT 20;';
     }
-    console.log(sql);
 
     // Execute query
     connection.query(sql, function(err, result) {
