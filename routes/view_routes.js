@@ -25,6 +25,13 @@ router.get('/my_movies', (req, res) => {
     if (err) {
       console.log('err', err);
     }
+    // attempt caching
+    if (user.lastUpdated < user.lastMyMovieUpdate) {
+      console.log('fetching from cache');
+      return res.render('index', { movies: user.myMovieCache, my_movies: true });
+    }
+
+    // otherwise search
     let movie_ids = Object.keys(user.ratings).map((x) => `'${x}'`);
     let sql = `SELECT concat('<a href=http://localhost:3000/movie/', movie_id,'>') ref, movie_id, title, release_year as year, runtime, rating FROM Movie WHERE movie_id IN (${movie_ids})`;
     // sql query
@@ -33,7 +40,15 @@ router.get('/my_movies', (req, res) => {
         x.user_rating = user.ratings[x.movie_id];
         return x;
       }) : {};
-      res.render('index', { movies: result, my_movies: true });
+
+      user.lastMyMovieUpdate = new Date();
+      user.myMovieCache = result;
+      Models.User.update({ facebookId: req.user.facebookId }, user , {upsert:true}, function(err){
+        if (err) {
+          console.log("Update Error", err);
+        }
+        res.render('index', { movies: result, my_movies: true });
+      });
     });
   });
 });
@@ -64,7 +79,7 @@ router.get('/my_recommendations', function (req, res, next) {
       }
       user.lastCache = new Date();
       user.cache = results;
-      Models.User.update({ facebookId: req.user.facebookId }, user ,{upsert:true},function(err){
+      Models.User.update({ facebookId: req.user.facebookId }, user , {upsert:true}, function(err){
         if (err) {
           console.log("Update Error", err);
         }
@@ -131,7 +146,7 @@ router.get('/movie/:movie_id', function (req, res, next) {
           uz1.lastUpdated = new Date();
           uz1.ratings[req.params.movie_id] = req.query.movie_rating;
           mongo_info.rating = req.query.movie_rating;
-          Models.User.update({facebookId:req.user.facebookId},uz1,{upsert:true},function(err){
+          Models.User.update({ facebookId:req.user.facebookId }, uz1, { upsert:true }, function(err){
             if (err) {
               console.log("Mongo Update Error", err);
             }

@@ -20,6 +20,12 @@ const UserSchema = new Schema({
   },
   cache: {
     type: Object
+  },
+  lastMyMovieUpdate: {
+    type: Date
+  },
+  myMovieCache: {
+    type: Object
   }
 });
 

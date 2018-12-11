@@ -99,7 +99,12 @@ passport.use(new FacebookStrategy({
       $setOnInsert: {
         facebookId: profile.id,
         displayName: profile.displayName,
-        ratings: {}
+        ratings: {},
+        lastUpdated: new Date(),
+        lastCache: new Date(),
+        cache: [],
+        lastMyMovieUpdate: new Date(),
+        myMovieCache: []
       }
     }, {
       new: true,   // return new doc if one is upserted
