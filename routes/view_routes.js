@@ -5,14 +5,22 @@ const router = express.Router();
 const search = require('../helpers/search');
 const defSearch = require('../helpers/defSearch');
 const recommend = require('../helpers/recommend')
-
+let home_results;
 
 router.get('/', (req, res, next) => {
   var search_param = req.query.search_term;
   if (search_param === '' || search_param === undefined) {
-  	defSearch( function(results){
-	    res.render('index', { movie: 'no search!', movies:results });
-  	});
+    if (!home_results) {
+      defSearch( (results) => {
+        home_results = results
+        res.render('index', { movie: 'no search!', movies: results });
+      });
+    } else {
+      res.render('index', { movie: 'no search!', movies: home_results });
+    }
+  	// defSearch( function(results){
+	  //   res.render('index', { movie: 'no search!', movies: results });
+  	// });
   } else {
     search(search_param, function (results) {
       res.render('index', { movie: search_param, movies:results  });

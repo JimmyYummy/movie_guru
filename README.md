@@ -14,3 +14,7 @@ my-movies: 0 movies rated
 my-movies: 3 movies rated
   70 ms without caching
   40 ms afterwards
+
+home-page: Cached results on server start
+  155 ms without caching
+  43 ms afterwards
