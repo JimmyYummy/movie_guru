@@ -1,5 +1,8 @@
 // include modules for endpoint processing
 const express = require('express');
+const http = require('http');
+const https = require('https');
+const fs = require('fs')
 const bodyParser = require('body-parser');
 
 // include modules for view engine
@@ -30,7 +33,7 @@ const routes = require('./routes/routes');
 
 // env variable check
 if (!process.env.MONGODB_URI || !process.env.MYSQL_URI) {
-  console.log('ERROR: environmental variables missing, remember to source your env.sh file!');
+    console.log('ERROR: environmental variables missing, remember to source your env.sh file!');
 }
 
 // create server with express: port defaults to 3000
@@ -40,79 +43,80 @@ const port = process.env.PORT || 3001;
 // mongodb database setup
 
 // start connection to MONGODB
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true}).then(
-  () => {
-    console.log('connected to mongoDB');
-  },
-  (err) => {
-    console.log('err', err);
-  }
+mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true}).then(
+    () => {
+        console.log('connected to mongoDB');
+    },
+    (err) => {
+        console.log('err', err);
+    }
 );
 
 mongoose.connection.on('error', (err) => {
-  console.log('MONGODB_ERROR:', err);
+    console.log('MONGODB_ERROR:', err);
 });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.hbs', exphbs({
-  defaultLayout: 'main',
-  extname: '.hbs'
+    defaultLayout: 'main',
+    extname: '.hbs'
 }));
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // add middleware to parse body requests and login session information
 app.use(logger('dev'));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser(process.env.SECRET));
 app.use(express.static('public'));
 app.use(session({
-  secret: process.env.SECRET,
-  name: 'session',
-  store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  proxy: true,
-  resave: true,
-  saveUninitialized: true
+    secret: process.env.SECRET,
+    name: 'session',
+    store: new MongoStore({mongooseConnection: mongoose.connection}),
+    proxy: true,
+    resave: true,
+    saveUninitialized: true
 }));
 
 // passport authentication
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
 });
 
-passport.deserializeUser(function(id, done) {
-  models.User.findById(id, function(err, user) {
-    done(err, user);
-  });
+passport.deserializeUser(function (id, done) {
+    models.User.findById(id, function (err, user) {
+        done(err, user);
+    });
 });
 
 passport.use(new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "https://movie-guru.jingw.info/auth/facebook/callback",
-    profileFields: ['displayName']
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    models.User.findOneAndUpdate({ facebookId: profile.id}, {
-      $setOnInsert: {
-        facebookId: profile.id,
-        displayName: profile.displayName,
-        ratings: {},
-        lastUpdated: new Date(),
-        lastCache: new Date(),
-        cache: [],
-        lastMyMovieUpdate: new Date(),
-        myMovieCache: []
-      }
-    }, {
-      new: true,   // return new doc if one is upserted
-      upsert: true // insert the document if it does not exist
-    }, function (err, user) {
-      return cb(err, user);
-    });
-  }
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret: process.env.FACEBOOK_APP_SECRET,
+        callbackURL: "https://movie-guru.jingw.info/auth/facebook/callback",
+        // callbackURL: "https://localhost:3001/auth/facebook/callback",
+        profileFields: ['displayName']
+    },
+    function (accessToken, refreshToken, profile, cb) {
+        models.User.findOneAndUpdate({facebookId: profile.id}, {
+            $setOnInsert: {
+                facebookId: profile.id,
+                displayName: profile.displayName,
+                ratings: {},
+                lastUpdated: new Date(),
+                lastCache: new Date(),
+                cache: [],
+                lastMyMovieUpdate: new Date(),
+                myMovieCache: []
+            }
+        }, {
+            new: true,   // return new doc if one is upserted
+            upsert: true // insert the document if it does not exist
+        }, function (err, user) {
+            return cb(err, user);
+        });
+    }
 ));
 
 app.use(passport.initialize());
@@ -124,20 +128,38 @@ app.use('/', routes.VIEW_ROUTES); // other routes
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
 app.use((err, req, res) => {
-  if (err.status === 404) {
-    res.status(404).send('Page Not Found: 404')
-  } else {
-    res.status(500).send('Internal Server Error: 500');
-  }
+    if (err.status === 404) {
+        res.status(404).send('Page Not Found: 404')
+    } else {
+        res.status(500).send('Internal Server Error: 500');
+    }
 });
 
-app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+// app.listen(port, () => {
+//     console.log(`Listening on port ${port}`);
+// });
+
+
+var httpsServ = https.createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+}, app);
+
+httpsServ.listen(443);
+
+var httpServ = http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+});
+
+
+httpServ.listen(80, () => {
+    console.log(`Listening`);
 });
