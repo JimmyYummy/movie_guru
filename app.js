@@ -91,7 +91,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3001/auth/facebook/callback",
+    callbackURL: "http://movie_gur.jingw.info/auth/facebook/callback",
     profileFields: ['displayName']
   },
   function(accessToken, refreshToken, profile, cb) {
