@@ -94,7 +94,7 @@ passport.deserializeUser(function (id, done) {
 passport.use(new FacebookStrategy({
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
-        callbackURL: "https://movie-guru.jingw.info/auth/facebook/callback",
+        callbackURL: "https://rocky-island-47956.herokuapp.com/auth/facebook/callback",
         // callbackURL: "https://localhost:3001/auth/facebook/callback",
         profileFields: ['displayName']
     },
@@ -142,24 +142,6 @@ app.use((err, req, res) => {
     }
 });
 
-// app.listen(port, () => {
-//     console.log(`Listening on port ${port}`);
-// });
-
-
-var httpsServ = https.createServer({
-    key: fs.readFileSync('server.key'),
-    cert: fs.readFileSync('server.cert')
-}, app);
-
-httpsServ.listen(port);
-
-// var httpServ = http.createServer(function (req, res) {
-//     res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-//     res.end();
-// });
-//
-//
-// httpServ.listen(80, () => {
-//     console.log(`Listening`);
-// });
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+});
