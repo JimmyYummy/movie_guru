@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/css/smv.css">
-<div class="content">
+<div class="content" id = "mainbody" mid = "{{sql_data.mid}}">
     <div>
         <div class = "icon-flex">
             <i id = "film-icon", class="fa fa-film fa-2x" aria-hidden="true"></i>
@@ -11,7 +11,8 @@
                 <li>Year Released: {{sql_data.movie.release_year}}</li>
                 <!--change the rating latter-->
                 <li>Rating: {{sql_data.movie.rating}}</li>
-                <li>Your Rating: <form id = "user_rating"> <input type="text" id="ratVal" value="{{goose_data.rating}}"> <input type="submit" id="ratBtn"> </form> 
+                <li>Your Rating: <span id = "userrating">{{goose_data.rating}}</span>
+                    <form id = "user_rating"> <input type="text" id="ratVal" value="-"> <input type="submit" id="ratBtn"> </form>
                 {{user_Id}}</li>
             </ul>
         </div>

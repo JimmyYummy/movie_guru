@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-module.exports = (passport) => {
-  router.get('/login', (req, res) => {
+module.exports = function (passport) {
+  router.get('/login', function (req, res) {
     res.render('login', { layout: false });
   });
 

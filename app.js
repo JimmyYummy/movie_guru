@@ -35,7 +35,7 @@ if (!process.env.MONGODB_URI || !process.env.MYSQL_URI) {
 
 // create server with express: port defaults to 3000
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // mongodb database setup
 
@@ -91,7 +91,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
-    callbackURL: "https://ancient-plateau-84686.herokuapp.com/auth/facebook/callback",
+    callbackURL: "http://localhost:3001/auth/facebook/callback",
     profileFields: ['displayName']
   },
   function(accessToken, refreshToken, profile, cb) {

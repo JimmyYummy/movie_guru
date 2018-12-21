@@ -63,7 +63,7 @@ var recommend = function (rated_movies, cb) {
             }
             const cast_id =  cast_by_avgrating[i].cast_id;
             const rating =  cast_by_avgrating[i].rating;
-            var sql = "(SELECT concat('<a href=https://ancient-plateau-84686.herokuapp.com/movie/', m.movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie m JOIN (SELECT cast_id, movie_id FROM Cast_In WHERE cast_id = '" + cast_id + "' AND movie_id NOT IN " + in_statement + ") c ON c.movie_id = m.movie_id ORDER BY m.rating DESC LIMIT 5)"
+            var sql = "(SELECT concat('<a href=http://localhost:3001/movie/', m.movie_id,'>')  ref,  title, release_year, runtime, rating FROM Movie m JOIN (SELECT cast_id, movie_id FROM Cast_In WHERE cast_id = '" + cast_id + "' AND movie_id NOT IN " + in_statement + ") c ON c.movie_id = m.movie_id ORDER BY m.rating DESC LIMIT 5)"
             movie_sql += sql + " UNION "
         }
         movie_sql = movie_sql.substring(0, movie_sql.length - 7) + ' LIMIT 20;';
