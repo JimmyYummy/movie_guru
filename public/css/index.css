@@ -1,1 +1,7 @@
+a {
+    color:black;
+}
 
+tr:hover {
+    background-color: aliceblue;
+}

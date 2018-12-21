@@ -13,7 +13,7 @@
   </thead>
 	{{#each movies}}
 		<tr>
-			<td> {{this.title}} ({{{this.ref}}}link</a>) </td>
+            <td> <a href="/movie/{{this.ref}}">{{this.title}}</a> </td>
 			<td> {{this.year}} </td>
 			<td> {{this.runtime}} </td>
       {{#if ../my_movies}}
