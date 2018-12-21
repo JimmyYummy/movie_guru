@@ -152,14 +152,14 @@ var httpsServ = https.createServer({
     cert: fs.readFileSync('server.cert')
 }, app);
 
-httpsServ.listen(443);
+httpsServ.listen(port);
 
-var httpServ = http.createServer(function (req, res) {
-    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
-    res.end();
-});
-
-
-httpServ.listen(80, () => {
-    console.log(`Listening`);
-});
+// var httpServ = http.createServer(function (req, res) {
+//     res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+//     res.end();
+// });
+//
+//
+// httpServ.listen(80, () => {
+//     console.log(`Listening`);
+// });
