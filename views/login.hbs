@@ -1,33 +1,47 @@
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Movie Guru</title>
-        <meta name="Movie Guru" content="Movie Recommendations">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://getbootstrap.com/docs/4.1/examples/floating-labels/floating-labels.css">
-        <link rel="stylesheet" type="text/css" href="css/login.css">
-        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
-    </head>
-    <body>
-      {{#if error}}
-        <form method="post" class="form-signin needs-validation was-validated" novalidate>
-      {{else}}
-        <form method="post" class="form-signin needs-validation" novalidate>
-      {{/if}}
-          <div class="text-center mb-4">
-            <img align="none" src="movie-icon.jpg" height="225" width="250">
-            <h1>
-              Movie Guru
-            </h1>
-          </div>
-          <button id="facebook-login" class="btn btn-lg btn-block" type="submit" style="background: #4267B2; color: white; text-align: left;">
-            <img height="30" width="30" style="margin-right: 15%;"src="Facebook-Brand-Asset-Pack/flogo_RGB_HEX-72.svg">
-            Sign in with Facebook
-          </button>
-        </form>
-    </body>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="/js/login.js"></script>
+<head>
+    <meta charset="utf-8">
+    <title>Movie Guru</title>
+    <meta name="Movie Guru" content="Movie Recommendations">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.1/examples/floating-labels/floating-labels.css">
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"/>
+</head>
+<body>
+{{#if error}}
+    <form method="post" class="form-signin needs-validation was-validated" novalidate>
+{{else}}
+    <form method="post" class="form-signin needs-validation" novalidate>
+{{/if}}
+    <div class="text-center mb-4">
+        <img align="none" src="movie-icon.jpg" height="225" width="250">
+        <h1>
+            Movie Guru
+        </h1>
+    </div>
+    <button id="facebook-login" class="btn btn-lg btn-block" type="submit"
+            style="background: #4267B2; color: white; text-align: left;">
+        <img height="30" width="30" style="margin-right: 15%;" src="Facebook-Brand-Asset-Pack/flogo_RGB_HEX-72.svg">
+        Sign in with Facebook
+    </button>
+    <div>
+        since the app is not officially deployed, please user the credential bellow: <br/>
+        username: jpjespprey_1545593920@tfbnw.net<br/>
+        password: testuserjenn
+    </div>
+
+</form>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="/js/login.js"></script>
 </html>
