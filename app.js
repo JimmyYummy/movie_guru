@@ -94,8 +94,7 @@ passport.deserializeUser(function (id, done) {
 passport.use(new FacebookStrategy({
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
-    //rocky-island-47956.herokuapp.com
-        callbackURL: "http://localhost:3001/auth/facebook/callback",
+        callbackURL: "https://rocky-island-47956.herokuapp.com/auth/facebook/callback",
         // callbackURL: "https://localhost:3001/auth/facebook/callback",
         profileFields: ['displayName']
     },
