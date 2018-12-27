@@ -7,3 +7,17 @@
 .navbar-nav>li>a:hover{
   text-decoration: underline;
 }
+
+.bottom-tag {
+  text-align: center;
+  margin: auto;
+}
+
+.bottom-tag a {
+  color: gray;
+}
+
+.bottom-tag a:visited {
+  color: gray;
+}
+
